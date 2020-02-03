@@ -1,1 +1,1 @@
-web: java -cp target/uberjar/reaktor-k20-standalone.jar clojure.main -m reaktor-k20.core
+web: lein ring server-headless $PORT
