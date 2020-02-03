@@ -1,4 +1,4 @@
-[![Heroku](https://heroku-badge.herokuapp.com/?app=reaktor-k20)]
+![Heroku](https://heroku-badge.herokuapp.com/?app=reaktor-k20)
 
 # reaktor-k20
 
