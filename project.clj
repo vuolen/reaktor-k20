@@ -3,7 +3,8 @@
   :url "http://reaktor-k20.herokuapp.com/"
   :license {:name "GPLv3"
             :url "https://www.gnu.org/licenses/"}
-  :dependencies [[org.clojure/clojure "1.8.0"]]
+  :dependencies [[org.clojure/clojure "1.8.0"]
+		 [hiccup "1.0.5"]]
   :main ^:skip-aot reaktor-k20.core
   :target-path "target/%s"
   :plugins [[lein-ring "0.12.5"]]
