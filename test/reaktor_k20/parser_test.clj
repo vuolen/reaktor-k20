@@ -17,3 +17,9 @@
 (is (= (parse "Package: \t  WhitespacePackage \t\t  ")
        {:Package "WhitespacePackage"})
     "parse should ignore whitespace around the value")
+
+(is (= (parse "Package: PackageValue\nDescription: desc\r\nVersion: vers")
+       {:Package "PackageValue"
+        :Description "desc"
+        :Version "vers"})
+    "parse should handle multiple fields on their own lines")
