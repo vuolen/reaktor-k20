@@ -18,8 +18,14 @@
        {:Package "WhitespacePackage"})
     "parse should ignore whitespace around the value")
 
-(is (= (parse "Package: PackageValue\nDescription: desc\r\nVersion: vers")
-       {:Package "PackageValue"
+(is (= (parse "Package: pack\nDescription: desc\r\nVersion: vers")
+       {:Package "pack"
         :Description "desc"
         :Version "vers"})
     "parse should handle multiple fields on their own lines")
+
+(is (= (parse "Package: pack\nDescription: descline1\n descline2\nVersion: vers")
+       {:Package "pack"
+        :Description "descline1\n descline2"
+        :Version "vers"})
+    "parse should handle folded fields")
