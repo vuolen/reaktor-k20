@@ -5,4 +5,4 @@
   [input-string]
   (let [[key value] (str/split input-string
                                #":")]
-    {(keyword key) (str/trim value)}))
+    (list {(keyword key) (str/trim value)})))
