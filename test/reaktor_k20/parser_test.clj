@@ -17,3 +17,7 @@
 (is (= (parse "Package: \t  WhitespacePackage \t\t  ")
        '({:Package "WhitespacePackage"}))
     "parse should ignore whitespace around a simple value")
+
+(is (= (parse "Description: This package is a package\n It does this and that\n not including that")
+       '({:Description "This package is a package\n It does this and that\n not including that"}))
+    "parse should parse description as multiline")
