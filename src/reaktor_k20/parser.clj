@@ -15,7 +15,7 @@
   (reduce into
           (map
            parse-field
-           (str/split input-string
+           (str/split paragraph-string
                       #"\r?\n(?![\t ])"))))
 
 (defn parse
