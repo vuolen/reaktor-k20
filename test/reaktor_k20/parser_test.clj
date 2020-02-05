@@ -3,8 +3,8 @@
    [reaktor-k20.parser :refer :all]
    [clojure.test :refer :all]])
 
-(is (list? (parse "Package: TestPackage"))
-    "parse should return a list of maps")
+(is (coll? (parse "Package: TestPackage"))
+    "parse should return a collection of maps")
 
 (is (= (parse "Package: TestPackage")
        '({:Package "TestPackage"}))
@@ -26,3 +26,14 @@
        '({:Package "TestPackage2"
           :Description "Test description"}))
     "parse should parse paragraphs")
+
+(is (= (parse "Package: Package1\n\nPackage: Package2")
+       '({:Package "Package1"}
+         {:Package "Package2"}))
+    "parse should parse multiple paragraphs")
+
+(is (= (parse "Package: TestPackage\n#This is a comment\nDescription: A description")
+       '({:Package "TestPackage"
+          :Description "A description"}))
+    "parse should ignore comment lines")
+

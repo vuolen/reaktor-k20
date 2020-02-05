@@ -3,11 +3,12 @@
 
 (defn parse-field
   "Takes a field as a string and returns a map of the key/value pairs"
-  [field-string]
+  [field-string] 
   (let [[key value] (str/split field-string
                                #":")]
-    {(keyword key)
-     (str/trim value)}))
+    (when-not (str/starts-with? key "#")
+      {(keyword key)
+       (str/trim value)})))
 
 (defn parse-paragraph
   "Takes a paragraph as a string and returns a map of the fields' key/value pairs"
@@ -21,4 +22,6 @@
 (defn parse
   "Takes a control file as a string and returns a map of the properties"
   [input-string]
-  (list (parse-paragraph input-string)))
+  (map parse-paragraph
+       (str/split input-string
+                  #"\n[\t ]*\n")))
