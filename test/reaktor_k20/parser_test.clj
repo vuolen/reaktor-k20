@@ -25,4 +25,4 @@
 (is (= (parse "Package: TestPackage2\nDescription: Test description")
        '({:Package "TestPackage2"
           :Description "Test description"}))
-    "parse should parse multiple fields")
+    "parse should parse paragraphs")
