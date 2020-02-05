@@ -3,6 +3,10 @@
 
 (defn parse "Takes a control file as a string and returns a map of the properties"
   [input-string]
-  (let [[key value] (str/split input-string
-                               #":")]
-    (list {(keyword key) (str/trim value)})))
+  (list (reduce into (map
+                      (fn [field-string]
+                        (let [[key value] (str/split field-string
+                                                     #":")]
+                          {(keyword key) (str/trim value)}))
+                      (str/split input-string
+                                 #"\r?\n(?![\t ])")))))
