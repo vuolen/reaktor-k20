@@ -10,10 +10,10 @@
        '({:Package "TestPackage"}))
     "parse should return a list that contains a map with a key value pair")
 
-(is (= (parse "Description: desc")
-       '({:Description "desc"}))
+(is (= (parse "Package: TestPackage1")
+       '({:Package "TestPackage1"}))
     "parse should return a list that contains a map with the correct key value pair")
 
 (is (= (parse "Package: \t  WhitespacePackage \t\t  ")
        '({:Package "WhitespacePackage"}))
-    "parse should ignore whitespace around the value")
+    "parse should ignore whitespace around a simple value")
