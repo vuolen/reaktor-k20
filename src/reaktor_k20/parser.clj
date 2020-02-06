@@ -14,14 +14,13 @@
   "Takes a paragraph as a string and returns a map of the fields' key/value pairs"
   [paragraph-string]
   (reduce into
-          (map
-           parse-field
-           (str/split paragraph-string
-                      #"\r?\n(?![\t ])"))))
+          (map parse-field
+               (str/split paragraph-string
+                          #"\r?\n(?![\t ])"))))
 
 (defn parse
-  "Takes a control file as a string and returns a map of the properties"
+  "Takes a control file as a string and returns an array of the packages as maps"
   [input-string]
   (map parse-paragraph
        (str/split input-string
-                  #"\n[\t ]*\n")))
+                  #"\n\n+")))

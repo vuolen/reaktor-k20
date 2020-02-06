@@ -9,6 +9,7 @@
   :target-path "target/%s"
   :plugins [[lein-ring "0.12.5"]]
   :ring {:handler reaktor-k20.core/handler}
-  :profiles {:uberjar {:aot :all}}
+  :profiles {:uberjar {:aot :all}
+             :dev {:resource-paths ["test/reaktor_k20/"]}}
   :uberjar-name "reaktor-k20-standalone.jar"
   :min-lein-version "2.0.0")
