@@ -8,7 +8,9 @@
   :main ^:skip-aot reaktor-k20.core
   :target-path "target/%s"
   :plugins [[lein-ring "0.12.5"]]
-  :ring {:handler reaktor-k20.core/handler}
+  :ring {:handler reaktor-k20.core/handler
+         :port 8000
+         :auto-refresh? true}
   :profiles {:uberjar {:aot :all}
              :dev {:resource-paths ["test/reaktor_k20/"]}}
   :uberjar-name "reaktor-k20-standalone.jar"
