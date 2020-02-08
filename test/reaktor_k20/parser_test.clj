@@ -5,7 +5,7 @@
    [clojure.java.io :as io]
    [clojure.string :as str]])
 
-(deftest parser-test
+(deftest parser-test-suite
 
   (is (coll? (parse "Package: TestPackage"))
       "parse should return a collection of maps")
