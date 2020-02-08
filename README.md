@@ -11,6 +11,14 @@ My solution for Reaktor's 2020 summer job [pre-assignment](https://www.reaktor.c
 3. Navigate to the project directory with your terminal and run `lein ring server`
 4. A browser window should open with the website open. If not, then navigate to `localhost:8000` with your browser of choice
 
+## Documentation
+
+### Overall process
+
+1. `parser.clj` parses a control file to a simple AST
+2. `htmlgen.clj` takes that AST and generates a HTML representation
+3. `core.clj` hosts the has the server handlers and serves HTML
+
 ## License
 
 This program is free software: you can redistribute it and/or modify
