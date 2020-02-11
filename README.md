@@ -9,7 +9,7 @@ My solution for Reaktor's 2020 summer job [pre-assignment](https://www.reaktor.c
 1. This project requires [Leiningen](https://leiningen.org/).
 2. Download/clone the project source from GitHub.
 3. Navigate to the project directory with your terminal and run `lein ring server`
-4. A browser window should open with the website open. If not, then navigate to `localhost:8000` with your browser of choice
+4. The website should automatically open. If not, then navigate to `localhost:8000` with your browser of choice
 
 ## Documentation
 
