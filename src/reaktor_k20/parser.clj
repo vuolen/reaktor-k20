@@ -1,26 +1,40 @@
 (ns reaktor-k20.parser
   [:require [clojure.string :as str]])
 
+(defn split-file-to-paragraphs
+  "Takes a control file as a string and returns an array of the paragraphs"
+  [input]
+  (str/split input
+             #"\n\n+"))
+
+(defn split-paragraph-to-fields
+  "Takes a paragraph as a string and returns an array of the fields"
+  [input]
+  (str/split input
+             #"\r?\n(?![\t ])"))
+
+(defn split-field
+  [input]
+  (str/split input
+             #":"))
+
 (defn parse-field
   "Takes a field as a string and returns a map of the key/value pairs"
-  [field-string] 
-  (let [[key value] (str/split field-string
-                               #":")]
+  [field-string]
+  (let [[key value] (split-field field-string)]
     (when-not (str/starts-with? key "#")
       {(keyword key)
        (str/trim value)})))
 
 (defn parse-paragraph
-  "Takes a paragraph as a string and returns a map of the fields' key/value pairs"
+  "Takes a paragraph as a string and returns a map of the fields"
   [paragraph-string]
   (reduce into
           (map parse-field
-               (str/split paragraph-string
-                          #"\r?\n(?![\t ])"))))
+               (split-paragraph-to-fields paragraph-string))))
 
 (defn parse
-  "Takes a control file as a string and returns an array of the packages as maps"
+  "Takes a control file as a string and returns an array of paragraphs"
   [input-string]
   (map parse-paragraph
-       (str/split input-string
-                  #"\n\n+")))
+       (split-file-to-paragraphs input-string)))
