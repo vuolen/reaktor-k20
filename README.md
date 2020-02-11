@@ -15,8 +15,9 @@ My solution for Reaktor's 2020 summer job [pre-assignment](https://www.reaktor.c
 
 ### Overall process
 
-1. `parser.clj` parses a control file to a simple AST
-2. `htmlgen.clj` takes that AST and generates a HTML representation
+1. `parser.clj` takes a control file as a string and parses it to an AST
+3. To be implemented an intermediary system to take the AST and calculate reverse dependencies
+2. `htmlgen.clj` generates a HTML representation
 3. `core.clj` hosts the has the server handlers and serves HTML
 
 ## License
