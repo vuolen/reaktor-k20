@@ -13,14 +13,20 @@
 ;;                  str " " trimmed)
 ;;       (conj html [:p nil trimmed]))))
 
+(defn split-at-first-line
+  "Takes a string and splits it into two at the first line break"
+  [s]
+  (str/split s #"\r?\n" 2))
+
 (defn generate-description
   "Takes a description as a string and generates a hiccup html form"
   [description]
-  [:div {:class "description"}
-   (nth (str/split-lines description) 0)])
+  (let [[first-line rest-lines] (split-at-first-line description)]
+    [:div {:class "description"}
+     first-line]))
 
 (defn generate
-  "Takes a map and returns a hiccup html form"
+  "Takes a map and returns a html string"
   [package]
   [:div {:class "package"}
    (when-let [name (:Package package)]
