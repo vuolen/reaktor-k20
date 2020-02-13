@@ -58,8 +58,5 @@
       "given a package with no description, generate should have a second child of nil"))
 
 
-(deftest generate-description-suite  
-  
-  (is (= (nth (generate-description "Synopsis\n Next line") 2)
-         "Synopsis")
-      "given a synopsis line, generate-description should have that line as the first child"))
+(deftest generate-description-suite
+  )

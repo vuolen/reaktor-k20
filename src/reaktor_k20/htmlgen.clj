@@ -21,9 +21,7 @@
 (defn generate-description
   "Takes a description as a string and generates a hiccup html form"
   [description]
-  (let [[first-line rest-lines] (split-at-first-line description)]
-    [:div {:class "description"}
-     first-line]))
+  )
 
 (defn generate
   "Takes a map and returns a html string"
