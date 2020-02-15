@@ -55,8 +55,27 @@
       "given a package with no name, generate should have a first child of nil")
   
   (is (nil? (nth (generate {:Package "TestPackage"}) 3))
-      "given a package with no description, generate should have a second child of nil"))
+      "given a package with no description, generate should have a second child of nil")
 
+  ;; (is (= (-> (generate {:Description "This is a package\n"})
+  ;;            (nth 3)
+  ;;            (nth 2))
+  ;;        "This is a package")
+  ;;     "given description with a synopsis line, generate should return a description div with that line as its first element")
 
-(deftest generate-description-suite
+  ;; (is (= (-> (generate {:Description "This is a package\n This is\n a paragraph\n on three lines"})
+  ;;            (nth 3)
+  ;;            (nth 3)
+  ;;            (nth 0))
+  ;;        [:p {:class "paragraph"} [" This is" " a paragraph" " on three lines"]])
+  ;;     "given description with a paragraph lines, generate should wrap them in a p element")
+
+  ;; (is (= (-> (generate {:Description "This is a package\n First line\n  this is verbatim\n this is not"})
+  ;;            (nth 3)
+  ;;            (nth 3)
+  ;;            (nth 0)
+  ;;            (nth 2)
+  ;;            (nth 1))
+  ;;        [:pre {:class "verbatim"} "  this is verbatim"])
+  ;;     "given description with a verbatim line, generate should wrap it in a pre element")
   )
