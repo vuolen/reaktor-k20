@@ -4,16 +4,15 @@
    [clojure.test :refer :all]
    [hiccup.core :refer [html]]])
 
-;; WARNING: unit testing html output is a difficult task, so the test coverage here will be subpar
-;; to keep things simple
+;; WARNING: testing html output leads to brittle tests at best, so be careful
 
 (def test-package1 {:Package "TestPackage"
-                    :Description "First line\n These lines\n are part\n of the same paragraph\n .\n  This line is preceded by a blank line and displayed verbatim"
+                    :Description ["First line" [" These lines" " are part" " of the same paragraph"] "  This line is preceded by a blank line and displayed verbatim"]
                     :Depends ["package1" "package2"]
                     :Reverse-Depends ["package3" "package4"]})
 
 (def test-package2 {:Package "TestPackage2"
-                    :Description "This is package 2"
+                    :Description ["This is package 2"]
                     :Depends ["packageA" "packageB"]
                     :Reverse-Depends ["packageC" "packageD"]})
 
@@ -42,40 +41,69 @@
     
     (is (= (get-in result2 [2 2])
            "TestPackage2")
-        "given a package named TestPackage2, generate should have a first child containing that name")
-    
-    (is (= (first (nth result1 3))
-           :div)
-        "given a package description, generate should have a div as the second child")
-    
-    (is (= (:class (second (nth result1 3)))
-           "description")
-        "given a package description, generate should have a second child with the class \"description\""))
+        "given a package named TestPackage2, generate should have a first child containing that name"))
   (is (nil? (nth (generate {:Description "desc"}) 2))
-      "given a package with no name, generate should have a first child of nil")
-  
-  (is (nil? (nth (generate {:Package "TestPackage"}) 3))
-      "given a package with no description, generate should have a second child of nil")
+      "given a package with no name, generate should have a first child of nil"))
 
-  ;; (is (= (-> (generate {:Description "This is a package\n"})
-  ;;            (nth 3)
-  ;;            (nth 2))
-  ;;        "This is a package")
-  ;;     "given description with a synopsis line, generate should return a description div with that line as its first element")
 
-  ;; (is (= (-> (generate {:Description "This is a package\n This is\n a paragraph\n on three lines"})
-  ;;            (nth 3)
-  ;;            (nth 3)
-  ;;            (nth 0))
-  ;;        [:p {:class "paragraph"} [" This is" " a paragraph" " on three lines"]])
-  ;;     "given description with a paragraph lines, generate should wrap them in a p element")
+(deftest generate-description-suite
+  (is (= (generate-description [])
+         nil)
+      "given an empty description, generate-description should return nil")
+  (is (= (first (generate-description ["Hello"]))
+         :div)
+      "given a description with a synopsis line, generate-description should return div")
+  (is (vector? (generate-description ["Hello"]))
+      "given a description with a synopsis line, generate-description should return a vector")
+  (is (= (:class (second (generate-description ["Hello"])))
+         "description")
+      "given a description with a synopsis line, generate-description should return an element with the class \"description\"")
+  (is (= (nth (generate-description ["Hello"])
+              2)
+         "Hello")
+      "given a description with a synopsis line, generate-description should return an element with that line as the first child")
+  (is (= (nth (generate-description ["Hello" [" These lines" " are in" " the same paragraph"]])
+              3)
+         (list [:p {:class "paragraph"}
+                (list " These lines"
+                      " are in"
+                      " the same paragraph")]))
+      "given a description with a synopsis and a paragraph, generate-description should return the paragraph in a p element")
+  (is (= (nth (generate-description ["Hello" "  This line is verbatim"])
+              3)
+         (list [:pre {:class "verbatim"}
+                "  This line is verbatim"]))
+      "given a description with a synopsis and a verbatim line, generate-description should return the verbatim line in a pre element"))
 
-  ;; (is (= (-> (generate {:Description "This is a package\n First line\n  this is verbatim\n this is not"})
-  ;;            (nth 3)
-  ;;            (nth 3)
-  ;;            (nth 0)
-  ;;            (nth 2)
-  ;;            (nth 1))
-  ;;        [:pre {:class "verbatim"} "  this is verbatim"])
-  ;;     "given description with a verbatim line, generate should wrap it in a pre element")
-  )
+
+(deftest generate-dependency-list-suite
+  (is (= (generate-dependency-list [])
+         nil)
+      "given no dependencies, generate-dependency-list should return nil")
+  (is (= (first (generate-dependency-list ["dependency1"]))
+         :div)
+      "given a dependency, generate-dependency-list should return a div")
+  (is (= (:class (second (generate-dependency-list ["dependency1"])))
+         "dependency-list")
+      "given a dependency, generate-dependency-list should return an element with the class \"dependency-list\"")
+  (is (= (first (-> (generate-dependency-list ["dependency1"])
+                    (nth 2)
+                    first))
+         :a)
+      "given a dependency, generate-dependency-list should have an a element as the first child")
+
+  (is (= (-> (generate-dependency-list ["dependency1"])
+             (nth 2)
+             (nth 0)
+             second
+             :class)
+         "dependency")
+      "given a dependency, generate-dependency-list should have an a element with the class \"dependency\" as the first child")
+
+  (is (= (-> (generate-dependency-list ["dependency1"])
+             (nth 2)
+             (nth 0)
+             second
+             :href)
+         "dependency1")
+      "given a dependency, generate-dependency-list should have an element with a href to the dependency as the first element"))
