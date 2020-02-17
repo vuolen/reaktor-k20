@@ -28,8 +28,8 @@
         "generate should return a div with the class \"package\"")
     
     (is (= (first (nth result1 2))
-           :div)
-        "given a package name, generate should have a div as the first child")
+           :h1)
+        "given a package name, generate should have h1 as the first child")
     
     (is (= (:class (second (nth result1 2)))
            "name")

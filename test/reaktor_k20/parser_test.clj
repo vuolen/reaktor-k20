@@ -5,61 +5,64 @@
    [clojure.java.io :as io]
    [clojure.string :as str]])
 
-(deftest parse-suite
-  (is (coll? (parse "Package: TestPackage"))
-      "parse should return a collection of maps")
+(deftest parse-file-suite
+  (is (coll? (parse-file "Package: TestPackage"))
+      "parse-file should return a collection of maps")
 
-  (is (= (-> (parse "Package: TestPackage")
-             first
+  (is (= (-> (parse-file "Package: TestPackage")
+             (get "TestPackage")
              :Package)
          "TestPackage")
-      "given a package TestPackage, parse should return TestPackage as the name")
+      "given a package TestPackage, parse-file should return TestPackage as the name")
 
-  (is (= (-> (parse "Package: TestPackage1")
-             first
+  (is (= (-> (parse-file "Package: TestPackage1")
+             (get "TestPackage1")
              :Package)
          "TestPackage1")
-      "given a package TestPackage1, parse should return TestPackage1 as the name")
+      "given a package TestPackage1, parse-file should return TestPackage1 as the name")
 
-  (is (= (-> (parse "Package: \t  WhitespacePackage \t\t  ")
-             first
+  (is (= (-> (parse-file "Package: \t  WhitespacePackage \t\t  ")
+             (get "WhitespacePackage")
              :Package)
          "WhitespacePackage")
-      "given a package name with extra whitespace, parse should return the package name without whitespace")
+      "given a package name with extra whitespace, parse-file should return the package name without whitespace")
 
-  (is (= (first (parse "Package: TestPackage2\nDescription: Test description"))
+  (is (= (get (parse-file "Package: TestPackage2\nDescription: Test description")
+              "TestPackage2")
          {:Package "TestPackage2"
           :Description ["Test description"]
           :Reverse-Depends (list)})
-      "given a package name and a description, parse should return a single package with both")
+      "given a package name and a description, parse-file should return a single package with both")
 
-  (is (= (first (parse "Package: Package1\n\nPackage: Package2"))
+  (is (= (get (parse-file "Package: Package1\n\nPackage: Package2")
+              "Package1")
          {:Package "Package1"
           :Reverse-Depends (list)})
-      "given two separate packages, parse should return the first package as the first element")
+      "given two separate packages, parse-file should return the first package as the first element")
 
-  (is (= (first (parse "Package: TestPackage\n#This is a comment\n#Depends: Commented out\nDescription: A description"))
+  (is (= (get (parse-file "Package: TestPackage\n#This is a comment\n#Depends: Commented out\nDescription: A description")
+              "TestPackage")
          {:Package "TestPackage"
           :Description ["A description"]
           :Reverse-Depends (list)})
-      "given a package with a comment line, parse should ignore that line")
+      "given a package with a comment line, parse-file should ignore that line")
 
-  (is (= (-> (parse "Package: TestPackage\n\n\n")
-             first
+  (is (= (-> (parse-file "Package: TestPackage\n\n\n")
+             (get "TestPackage")
              :Package)
          "TestPackage")
-      "given multiple consecutive line breaks, parse should ignore them")
+      "given multiple consecutive line breaks, parse-file should ignore them")
 
-  (is (not (contains? (first (parse "Package: TestPackage\nFilter: this field"))
+  (is (not (contains? (first (parse-file "Package: TestPackage\nFilter: this field"))
                       :Filter))
-      "given a field without a parser, parse should not include them")
+      "given a field without a parser, parse-file should not include them")
   
-  ;; (is (= (-> (parse "Package: package1\n\nPackage: package2\nDepends: package1")
+  ;; (is (= (-> (parse-file "Package: package1\n\nPackage: package2\nDepends: package1")
   ;;            first
   ;;            :Reverse-Depends
   ;;            first)
   ;;        "package2")
-  ;;     "given package2 that depends on package1, parse should return package2 in the reverse dependencies of package1")
+  ;;     "given package2 that depends on package1, parse-file should return package2 in the reverse dependencies of package1")
   )
 
 (deftest parse-description-suite

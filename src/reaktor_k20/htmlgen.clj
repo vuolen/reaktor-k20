@@ -42,11 +42,12 @@
 (defn generate-name
   "Generates html from a package name"
   [name]
-  [:div {:class "name"} name])
+  [:h1 {:class "name"} name])
 
 (defn generate
   "Generates html from a package map"
   [package]
+  (println "GENERATE " (:Package package))
   [:div {:class "package"}
    (when-let [name (:Package package)]
      (generate-name name))
