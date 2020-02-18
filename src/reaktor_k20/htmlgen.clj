@@ -42,7 +42,7 @@
   [description]
   (when-not (empty? description)
     [:div {:class "description"}
-     (first description)
+     [:b (first description)]
      (map generate-description-paragraph
           (rest description))]))
 
@@ -59,11 +59,14 @@
    (when-let [name (:Package package)]
      (generate-name name))
    (when-let [description (:Description package)]
-     (generate-description description))
+     (list [:h2 "Description"]
+           (generate-description description)))
    (when-let [dependencies (:Depends package)]
-     (generate-dependency-list packages dependencies))
+     (list [:h2 "Dependencies"]
+           (generate-dependency-list packages dependencies)))
    (when-let [reverse-dependencies (:Reverse-Depends package)]
-     (generate-dependency-list packages reverse-dependencies))])
+     (list [:h2 "Reverse dependencies"]
+           (generate-dependency-list packages reverse-dependencies)))])
 
 (defn generate-index
   [packages]

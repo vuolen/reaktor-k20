@@ -23,17 +23,8 @@
   (or (read-dpkg-status)
       (read-mock-file)))
 
-(defn update-all
-  "Takes a function and applies it to every value in a map"
-  [f m]
-  (into {}
-        (for [[k v] m]
-          [k (f v)])))
-
 (defonce packages (->> (read-real-or-mock-file)
-                       parser/parse-file
-                                        ;(update-all htmlgen/generate)
-                       ))
+                       parser/parse-file))
 
 (defn get-package-from-uri
   "Returns the package from the uri. Returns nil if not found"
@@ -42,18 +33,27 @@
        (subs uri
              1)))
 
+(defn serve-package-site
+  [request]
+  (if-let [package (get-package-from-uri (:uri request))]
+    {:status 200
+     :headers {"Content-Type" "text/html"}
+     :body (html5 [:a {:href "/"} "back to index"]
+                  (htmlgen/generate packages
+                                    package))}
+    {:status 404
+     :headers {"Content-Type" "text/html"}
+     :body (html5 [:h1 "Package not found"])}))
+
+(defn serve-index
+  [request]
+  {:status 200
+   :headers {"Content-Type" "text/html"}
+   :body (html5 (htmlgen/generate-index packages))})
+
 (defn handler [request]
   (if (= (:uri request)
          "/")
-    {:status 200
-     :headers {"Content-Type" "text/html"}
-     :body (html5 (htmlgen/generate-index packages))}    
-    (if-let [package (get-package-from-uri (:uri request))]
-      {:status 200
-       :headers {"Content-Type" "text/html"}
-       :body (html (htmlgen/generate packages
-                                     package))}
-      {:status 404
-       :headers {"Content-Type" "text/html"}
-       :body (html5 [:h1 "Package not found"])}))
+    (serve-index request)
+    (serve-package-site request))
   )
