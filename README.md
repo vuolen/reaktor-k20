@@ -1,5 +1,7 @@
 ![Heroku](https://heroku-badge.herokuapp.com/?app=reaktor-k20)
 
+[DEMO HERE](https://reaktor-k20.herokuapp.com/)
+
 # reaktor-k20
 
 My solution for Reaktor's 2020 summer job [pre-assignment](https://www.reaktor.com/junior-dev-assignment/).
