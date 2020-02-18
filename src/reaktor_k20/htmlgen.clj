@@ -16,17 +16,26 @@
               dependency))
           dependency-list)]))
 
-(defn generate-description-paragraph
-  "Generates html from a paragraph in a package description"
-  [paragraph]
-  [:p {:class "paragraph"}
-   (seq paragraph)])
-
 (defn generate-description-verbatim
   "Generates html from a verbatim line in a package description"
   [line]
   [:pre {:class "verbatim"}
    line])
+
+(defn verbatim-line?
+  "Takes a string and returns true if it should be displayed verbatim"
+  [line]
+  (str/starts-with? line "  "))
+
+(defn generate-description-paragraph
+  "Generates html from a paragraph in a package description"
+  [paragraph]
+  [:p {:class "paragraph"}
+   (map (fn [line]
+          (if (verbatim-line? line)
+            (generate-description-verbatim line)
+            line))
+        paragraph)])
 
 (defn generate-description
   "Generates html from a package's description"
@@ -34,12 +43,7 @@
   (when-not (empty? description)
     [:div {:class "description"}
      (first description)
-     (map (fn [element]
-            (if (coll? element)
-              (generate-description-paragraph
-               element)
-              (generate-description-verbatim
-               element)))
+     (map generate-description-paragraph
           (rest description))]))
 
 (defn generate-name

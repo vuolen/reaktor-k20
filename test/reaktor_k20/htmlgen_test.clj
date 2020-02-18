@@ -69,8 +69,10 @@
                       " are in"
                       " the same paragraph")]))
       "given a description with a synopsis and a paragraph, generate-description should return the paragraph in a p element")
-  (is (= (nth (generate-description ["Hello" "  This line is verbatim"])
-              3)
+  (is (= (-> (generate-description ["Hello" ["  This line is verbatim"]])
+             (nth 3)
+             (nth 0)
+             (nth 2))
          (list [:pre {:class "verbatim"}
                 "  This line is verbatim"]))
       "given a description with a synopsis and a verbatim line, generate-description should return the verbatim line in a pre element"))

@@ -57,13 +57,22 @@
                       :Filter))
       "given a field without a parser, parse-file should not include them")
   
-  ;; (is (= (-> (parse-file "Package: package1\n\nPackage: package2\nDepends: package1")
-  ;;            first
-  ;;            :Reverse-Depends
-  ;;            first)
-  ;;        "package2")
-  ;;     "given package2 that depends on package1, parse-file should return package2 in the reverse dependencies of package1")
+  (is (= (-> (parse-file "Package: package1\n\nPackage: package2\nDepends: package1")
+             (get "package1")
+             :Reverse-Depends
+             first)
+         "package2")
+      "given package2 that depends on package1, parse-file should return package2 in the reverse dependencies of package1")
   )
+
+(deftest parse-field-suite
+  (is (= (-> (parse-field "Description: Synopsis\n This line contains a colon:\n it should be ignored")
+             :Description
+             second
+             first
+             second)
+         " it should be ignored")
+      "given a description with a colon in it, parse-field should ignore it"))
 
 (deftest parse-description-suite
   
@@ -73,7 +82,7 @@
   (is (= (first (parse-description "Synopsis\n paragraph\n"))
          "Synopsis")
       "given a synopsis and a paragraph, parse-description should have the synopsis line as the first element")
-  (is (= (second (parse-description "Synopsis\n this is a paragraph\n  -with a verbatim line\n and two normal lines"))
+  (is (= (first (second (parse-description "Synopsis\n this is a paragraph\n  -with a verbatim line\n and two normal lines")))
          [" this is a paragraph" "  -with a verbatim line" " and two normal lines"])
       "given a synopsis and a paragraph, parse-description should have the paragraph as a second element"))
 

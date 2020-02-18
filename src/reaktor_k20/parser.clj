@@ -21,11 +21,10 @@
   [description]
   (let [[synopsis extended] (split-at-first-line description)]
     (if extended
-      [synopsis
-       (->> extended
-            (split-extended-description-paragraphs)
-            (map str/split-lines)
-            flatten)]
+      (concat [synopsis]
+              (->> extended
+                   (split-extended-description-paragraphs)
+                   (map str/split-lines)))
       [synopsis])))
 
 (defn parse-package-name-from-dependency
@@ -56,7 +55,7 @@
   "Takes a field as a string and returns the key as a keyword the and value as a string"
   [field-string]
   (as-> field-string fs
-    (str/split fs #":")
+    (str/split fs #":" 2)
     (map str/trim fs)
     (list (keyword (first fs))
           (second fs))))
@@ -90,8 +89,8 @@
 (defn depends-on?
   "Returns true if the first package depends on the second one"
   [package1 package2]
-  (boolean (some #(= % (:Package package1))
-                 (:Depends package2))))
+  (boolean (some #(= % (:Package package2))
+                 (:Depends package1))))
 
 (defn get-reverse-dependency-names
   "Returns the names of the reverse dependencies of the second argument"
