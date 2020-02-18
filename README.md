@@ -13,12 +13,52 @@ My solution for Reaktor's 2020 summer job [pre-assignment](https://www.reaktor.c
 
 ## Documentation
 
-### Overall process
+### Parser
 
-1. `parser.clj` takes a control file as a string and parses it to an AST
-3. To be implemented an intermediary system to take the AST and calculate reverse dependencies
-2. `htmlgen.clj` generates a HTML representation
-3. `core.clj` hosts the has the server handlers and serves HTML
+The parser produces output like this from a control file:
+```
+{
+  "package_name" {
+    :Package "package_name"
+    :Description ["Synopsis line" [" Paragraphs are stored" " in vectors and split by lines"] 
+                  [" Lines starting with" "  two or more spaces" "  are displayed verbatim without word breaks"]]
+    :Depends ["dependency1" "dependency2"]
+    :Reverse-Depends ["dependencyA" "dependencyB"]
+  }
+}
+```
+
+### HTML generator
+
+The HTML generator produces output like this from a parsed package
+```
+<div class="package">
+  <h1 class="name"> package_name </h1>
+  <div class="description">
+    Synopsis line
+    <p class="paragraph">
+      Paragraphs are stored in vectors and split by lines
+    </p>
+    <p class="paragraph>
+      Lines starting with
+      <pre class="verbatim">
+        two or more spaces
+      </pre>
+      <pre class="verbatim">
+        are displayed verbatim without word breaks
+      </pre>
+    </p>
+  </div>
+  <div class="dependency-list">
+    <a href="dependency1">dependency1</a>
+    <a href="dependency1">dependency2</a>
+  </div>
+  <div class="dependency-list">
+    <a href="dependencyA">dependencyA</a>
+    <a href="dependencyB">dependencyB</a>
+  </div>
+</div>
+```
 
 ## License
 
