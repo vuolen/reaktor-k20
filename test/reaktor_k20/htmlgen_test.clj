@@ -17,8 +17,8 @@
                     :Reverse-Depends ["packageC" "packageD"]})
 
 (deftest generate-test-suite
-  (let [result1 (generate test-package1)
-        result2 (generate test-package2)]
+  (let [result1 (generate {} test-package1)
+        result2 (generate {} test-package2)]
     (is (= (first result1)
            :div)
         "generate should return a div")
@@ -42,7 +42,7 @@
     (is (= (get-in result2 [2 2])
            "TestPackage2")
         "given a package named TestPackage2, generate should have a first child containing that name"))
-  (is (nil? (nth (generate {:Description "desc"}) 2))
+  (is (nil? (nth (generate {} {:Description "desc"}) 2))
       "given a package with no name, generate should have a first child of nil"))
 
 
@@ -77,22 +77,22 @@
 
 
 (deftest generate-dependency-list-suite
-  (is (= (generate-dependency-list [])
+  (is (= (generate-dependency-list {} [])
          nil)
       "given no dependencies, generate-dependency-list should return nil")
-  (is (= (first (generate-dependency-list ["dependency1"]))
+  (is (= (first (generate-dependency-list {} ["dependency1"]))
          :div)
       "given a dependency, generate-dependency-list should return a div")
-  (is (= (:class (second (generate-dependency-list ["dependency1"])))
+  (is (= (:class (second (generate-dependency-list {"dependency1" {}} ["dependency1"])))
          "dependency-list")
       "given a dependency, generate-dependency-list should return an element with the class \"dependency-list\"")
-  (is (= (first (-> (generate-dependency-list ["dependency1"])
+  (is (= (first (-> (generate-dependency-list {"dependency1" {}} ["dependency1"])
                     (nth 2)
                     first))
          :a)
       "given a dependency, generate-dependency-list should have an a element as the first child")
 
-  (is (= (-> (generate-dependency-list ["dependency1"])
+  (is (= (-> (generate-dependency-list {"dependency1" {}} ["dependency1"])
              (nth 2)
              (nth 0)
              second
@@ -100,7 +100,7 @@
          "dependency")
       "given a dependency, generate-dependency-list should have an a element with the class \"dependency\" as the first child")
 
-  (is (= (-> (generate-dependency-list ["dependency1"])
+  (is (= (-> (generate-dependency-list {"dependency1" {}} ["dependency1"])
              (nth 2)
              (nth 0)
              second

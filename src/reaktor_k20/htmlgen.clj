@@ -4,13 +4,16 @@
 
 (defn generate-dependency-list
   "Generates html from a package's dependency list"
-  [dependency-list]
+  [packages dependency-list]
   (when-not (empty? dependency-list)
     [:div {:class "dependency-list"}
      (map (fn [dependency]
-            [:a {:class "dependency"
-                 :href dependency}
-             dependency])
+            (if (contains? packages
+                           dependency)
+              [:a {:class "dependency"
+                   :href dependency}
+               dependency]
+              dependency))
           dependency-list)]))
 
 (defn generate-description-paragraph
@@ -46,7 +49,7 @@
 
 (defn generate
   "Generates html from a package map"
-  [package]
+  [packages package]
   (println "GENERATE " (:Package package))
   [:div {:class "package"}
    (when-let [name (:Package package)]
@@ -54,6 +57,12 @@
    (when-let [description (:Description package)]
      (generate-description description))
    (when-let [dependencies (:Depends package)]
-     (generate-dependency-list dependencies))
+     (generate-dependency-list packages dependencies))
    (when-let [reverse-dependencies (:Reverse-Depends package)]
-     (generate-dependency-list reverse-dependencies))])
+     (generate-dependency-list packages reverse-dependencies))])
+
+(defn generate-index
+  [packages]
+  [:ul
+   (for [name (sort (keys packages))]
+     [:li [:a {:href name} name]])])

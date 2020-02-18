@@ -1,5 +1,6 @@
 (ns reaktor-k20.core
-  (:use [hiccup.core])
+  (:use [hiccup.core]
+        [hiccup.page])
   (:require [clojure.java.io :as io]
             [reaktor-k20.parser :as parser :refer [parse-file]]
             [reaktor-k20.htmlgen :as htmlgen :refer [generate]]))
@@ -42,10 +43,17 @@
              1)))
 
 (defn handler [request]
-  (if-let [package (get-package-from-uri (:uri request))]
+  (if (= (:uri request)
+         "/")
     {:status 200
      :headers {"Content-Type" "text/html"}
-     :body (html (htmlgen/generate package))}
-    {:status 200
-     :headers {"Content-Type" "text/html"}
-     :body (html "Hello World")}))
+     :body (html5 (htmlgen/generate-index packages))}    
+    (if-let [package (get-package-from-uri (:uri request))]
+      {:status 200
+       :headers {"Content-Type" "text/html"}
+       :body (html (htmlgen/generate packages
+                                     package))}
+      {:status 404
+       :headers {"Content-Type" "text/html"}
+       :body (html5 [:h1 "Package not found"])}))
+  )
