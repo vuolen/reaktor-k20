@@ -69,7 +69,6 @@
   (is (= (-> (parse-field "Description: Synopsis\n This line contains a colon:\n it should be ignored")
              :Description
              second
-             first
              second)
          " it should be ignored")
       "given a description with a colon in it, parse-field should ignore it"))
@@ -82,7 +81,7 @@
   (is (= (first (parse-description "Synopsis\n paragraph\n"))
          "Synopsis")
       "given a synopsis and a paragraph, parse-description should have the synopsis line as the first element")
-  (is (= (first (second (parse-description "Synopsis\n this is a paragraph\n  -with a verbatim line\n and two normal lines")))
+  (is (= (second (parse-description "Synopsis\n this is a paragraph\n  -with a verbatim line\n and two normal lines"))
          [" this is a paragraph" "  -with a verbatim line" " and two normal lines"])
       "given a synopsis and a paragraph, parse-description should have the paragraph as a second element"))
 
