@@ -8,16 +8,15 @@
   "Generates html from a package's dependency list"
   [packages dependency-list]
   (when-not (empty? dependency-list)
-    [:p {:class "dependency-list"}
-     (interpose ", "
-                (map (fn [dependency]
-                       (if (contains? packages
-                                      dependency)
-                         [:a {:class "dependency"
-                              :href dependency}
-                          dependency]
-                         dependency))
-                     dependency-list))]))
+    [:ul {:class "dependency-list"}
+     (map (fn [dependency]
+            [:li
+             (if (contains? packages
+                            dependency)
+               [:a {:href dependency}
+                dependency]
+               dependency)])
+          dependency-list)]))
 
 (defn generate-description-verbatim
   "Generates html from a verbatim line in a package description"
