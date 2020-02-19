@@ -1,9 +1,17 @@
 body {
     max-width: 50em;
-    padding: 1em;
     margin: 0 auto;
     font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 1.2em;
+}
+
+body {
+    background: #F2F2F2;
+}
+
+body > div {
+    padding: 2em;
+    background: #FFFFFF;
 }
 
 p, b {
@@ -16,4 +24,8 @@ h2 {
 
 ul {
     line-height: 1.75;
+}
+
+a {
+    text-decoration: none;
 }
