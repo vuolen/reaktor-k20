@@ -67,8 +67,9 @@
      (list [:h2 "Dependencies"]
            (generate-dependency-list packages dependencies)))
    (when-let [reverse-dependencies (:Reverse-Depends package)]
-     (list [:h2 "Reverse dependencies"]
-           (generate-dependency-list packages reverse-dependencies)))])
+     (when-not (empty? reverse-dependencies)
+       (list [:h2 "Reverse dependencies"]
+             (generate-dependency-list packages reverse-dependencies))))])
 
 (defn format-html
   "Takes a html string and returns it formatted"
@@ -103,9 +104,11 @@
   "Takes a list of packages and returns the index page as a html string"
   [packages]
   (generate-page "Index"
-                 [:ul
-                  (for [name (sort (keys packages))]
-                    [:li [:a {:href name} name]])]))
+                 [:div
+                  [:h1 "Installed packages:"]
+                  [:ul
+                   (for [name (sort (keys packages))]
+                     [:li [:a {:href name} name]])]]))
 
 (defn generate-package-page
   "Takes a single package and returns its page as a html string"
