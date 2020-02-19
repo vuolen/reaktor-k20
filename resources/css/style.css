@@ -6,3 +6,10 @@ body {
     font-size: 1.2em;
 }
 
+p, b {
+    color: #555555;
+}
+
+h2 {
+    color: #404040;
+}
