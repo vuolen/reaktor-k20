@@ -17,33 +17,33 @@
                     :Reverse-Depends ["packageC" "packageD"]})
 
 (deftest generate-test-suite
-  (let [result1 (generate {} test-package1)
-        result2 (generate {} test-package2)]
+  (let [result1 (generate-package {} test-package1)
+        result2 (generate-package {} test-package2)]
     (is (= (first result1)
            :div)
-        "generate should return a div")
+        "generate-package should return a div")
     
     (is (= (:class (second result1))
            "package")
-        "generate should return a div with the class \"package\"")
+        "generate-package should return a div with the class \"package\"")
     
     (is (= (first (nth result1 2))
            :h1)
-        "given a package name, generate should have h1 as the first child")
+        "given a package name, generate-package should have h1 as the first child")
     
     (is (= (:class (second (nth result1 2)))
            "name")
-        "given a package name, generate should have a first child with the class \"name\"")
+        "given a package name, generate-package should have a first child with the class \"name\"")
     
     (is (= (get-in result1 [2 2])
            "TestPackage")
-        "given a package named TestPackage, generate should have a first child containing that name")
+        "given a package named TestPackage, generate-package should have a first child containing that name")
     
     (is (= (get-in result2 [2 2])
            "TestPackage2")
-        "given a package named TestPackage2, generate should have a first child containing that name"))
-  (is (nil? (nth (generate {} {:Description "desc"}) 2))
-      "given a package with no name, generate should have a first child of nil"))
+        "given a package named TestPackage2, generate-package should have a first child containing that name"))
+  (is (nil? (nth (generate-package {} {:Description "desc"}) 2))
+      "given a package with no name, generate-package should have a first child of nil"))
 
 
 (deftest generate-description-suite

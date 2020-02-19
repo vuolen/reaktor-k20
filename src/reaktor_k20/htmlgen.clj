@@ -1,4 +1,6 @@
 (ns reaktor-k20.htmlgen
+  (:use [hiccup.core]
+        [hiccup.page])
   [require
    [clojure.string :as str]])
 
@@ -52,10 +54,9 @@
   [name]
   [:h1 {:class "name"} name])
 
-(defn generate
+(defn generate-package
   "Generates html from a package map"
   [packages package]
-  (println "GENERATE " (:Package package))
   [:div {:class "package"}
    (when-let [name (:Package package)]
      (generate-name name))
@@ -69,8 +70,47 @@
      (list [:h2 "Reverse dependencies"]
            (generate-dependency-list packages reverse-dependencies)))])
 
-(defn generate-index
+(defn format-html
+  "Takes a html string and returns it formatted"
+  [html]
+  (let [in (-> html
+               (java.io.StringReader.))
+        out (java.io.StringWriter.)
+        tidy  (org.w3c.tidy.Tidy.)]    
+    (.setTidyMark tidy false)
+    (.setSmartIndent tidy true)
+    (.setQuiet tidy true)
+    (.parse tidy in out)
+    (.close in)
+    (.close out)
+    (.toString out)))
+
+(defn generate-page
+  "Takes a title and a body and returns a generic page"
+  [title & body]
+  (format-html
+   (html5
+    [:head
+     [:title title]
+     (include-css "style.css")]
+    [:body
+     body])))
+
+(defn generate-index-page
+  "Takes a list of packages and returns the index page as a html string"
   [packages]
-  [:ul
-   (for [name (sort (keys packages))]
-     [:li [:a {:href name} name]])])
+  (generate-page "Index"
+                 [:ul
+                  (for [name (sort (keys packages))]
+                    [:li [:a {:href name} name]])]))
+
+(defn generate-package-page
+  "Takes a single package and returns its page as a html string"
+  [packages package]
+  (if-not (nil? package)
+    (generate-page (:Package package)
+                   [:a {:href "/"} "back to index"]
+                   (generate-package packages
+                                     package))
+    (generate-page "Package not found"
+                   [:h1 "Package not found"])))

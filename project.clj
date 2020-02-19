@@ -4,6 +4,7 @@
   :license {:name "GPLv3"
             :url "https://www.gnu.org/licenses/"}
   :dependencies [[org.clojure/clojure "1.8.0"]
+		 [ring "1.8.0"]
 		 [hiccup "1.0.5"]
 		 [net.sf.jtidy/jtidy "r938"]]
   :main ^:skip-aot reaktor-k20.core
