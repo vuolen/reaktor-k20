@@ -33,23 +33,38 @@
        (subs uri
              1)))
 
+(defn format-html
+  "Takes a html string and returns it formatted"
+  [html]
+  (let [in (-> html
+               (java.io.StringReader.))
+        out (java.io.StringWriter.)
+        tidy  (org.w3c.tidy.Tidy.)]    
+    (.setTidyMark tidy false)
+    (.setSmartIndent tidy true)
+    (.setQuiet tidy true)
+    (.parse tidy in out)
+    (.close in)
+    (.close out)
+    (.toString out)))
+
 (defn serve-package-site
   [request]
   (if-let [package (get-package-from-uri (:uri request))]
     {:status 200
      :headers {"Content-Type" "text/html"}
-     :body (html5 [:a {:href "/"} "back to index"]
-                  (htmlgen/generate packages
-                                    package))}
+     :body (format-html (html5 [:body [:a {:href "/"} "back to index"]
+                                (htmlgen/generate packages
+                                                  package)]))}
     {:status 404
      :headers {"Content-Type" "text/html"}
-     :body (html5 [:h1 "Package not found"])}))
+     :body (format-html (html5 [:body [:h1 "Package not found"]]))}))
 
 (defn serve-index
   [request]
   {:status 200
    :headers {"Content-Type" "text/html"}
-   :body (html5 (htmlgen/generate-index packages))})
+   :body (format-html (html5 [:body (htmlgen/generate-index packages)]))})
 
 (defn handler [request]
   (if (= (:uri request)
