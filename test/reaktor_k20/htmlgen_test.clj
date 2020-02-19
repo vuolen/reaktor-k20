@@ -84,7 +84,7 @@
          nil)
       "given no dependencies, generate-dependency-list should return nil")
   (is (= (first (generate-dependency-list {} ["dependency1"]))
-         :div)
+         :p)
       "given a dependency, generate-dependency-list should return a div")
   (is (= (:class (second (generate-dependency-list {"dependency1" {}} ["dependency1"])))
          "dependency-list")

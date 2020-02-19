@@ -6,7 +6,7 @@
   "Generates html from a package's dependency list"
   [packages dependency-list]
   (when-not (empty? dependency-list)
-    [:div {:class "dependency-list"}
+    [:p {:class "dependency-list"}
      (map (fn [dependency]
             (if (contains? packages
                            dependency)
