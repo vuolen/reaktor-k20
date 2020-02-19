@@ -3,15 +3,13 @@ body {
     margin: 0 auto;
     font-family: 'Helvetica', 'Arial', sans-serif;
     font-size: 1.2em;
-}
-
-body {
     background: #F2F2F2;
 }
 
 body > div {
     padding: 2em;
     background: #FFFFFF;
+    overflow: scroll;
 }
 
 p, b {
@@ -28,4 +26,8 @@ ul {
 
 a {
     text-decoration: none;
+}
+
+.verbatim {
+    display: inline;
 }

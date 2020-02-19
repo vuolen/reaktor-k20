@@ -35,7 +35,8 @@
   [:p {:class "paragraph"}
    (map (fn [line]
           (if (verbatim-line? line)
-            (generate-description-verbatim line)
+            (list [:br]
+                  (generate-description-verbatim line))
             line))
         paragraph)])
 
