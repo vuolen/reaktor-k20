@@ -35,7 +35,7 @@
 
 (defn serve-package-site
   [request]
-  (if-let [package (get-package-from-uri (:uri request))]
+  (let [package (get-package-from-uri (:uri request))]
     {:status (if (nil? package) 404 200)
      :headers {"Content-Type" "text/html"}
      :body (generate-package-page packages
