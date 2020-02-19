@@ -57,6 +57,7 @@
   "Generates html from a package map"
   [packages package]
   [:div {:class "package"}
+   [:a {:href "/"} "back to index"]
    (when-let [name (:Package package)]
      (generate-name name))
    (when-let [description (:Description package)]
@@ -98,7 +99,6 @@
   [packages package]
   (if-not (nil? package)
     (generate-page (:Package package)
-                   [:a {:href "/"} "back to index"]
                    (generate-package packages
                                      package))
     (generate-page "Package not found"
