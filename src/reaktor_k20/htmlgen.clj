@@ -70,34 +70,18 @@
        (list [:h2 "Reverse dependencies"]
              (generate-dependency-list packages reverse-dependencies))))])
 
-(defn format-html
-  "Takes a html string and returns it formatted"
-  [html]
-  (let [in (-> html
-               (java.io.StringReader.))
-        out (java.io.StringWriter.)
-        tidy  (org.w3c.tidy.Tidy.)]    
-    (.setTidyMark tidy false)
-    (.setSmartIndent tidy true)
-    (.setQuiet tidy true)
-    (.parse tidy in out)
-    (.close in)
-    (.close out)
-    (.toString out)))
-
 (defn generate-page
   "Takes a title and a body and returns a generic page"
   [title & body]
-  (format-html
-   (html5
-    [:head
-     [:title title]
-     (include-css "style.css")
-     [:meta {:name "viewport"
-             :content "width=device-width, initial-scale=1.0"}]
-     ]
-    [:body
-     body])))
+  (html5
+   [:head
+    [:title title]
+    (include-css "style.css")
+    [:meta {:name "viewport"
+            :content "width=device-width, initial-scale=1.0"}]
+    ]
+   [:body
+    body]))
 
 (defn generate-index-page
   "Takes a list of packages and returns the index page as a html string"
