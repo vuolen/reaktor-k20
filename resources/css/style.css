@@ -13,3 +13,7 @@ p, b {
 h2 {
     color: #404040;
 }
+
+ul {
+    line-height: 1.75;
+}
