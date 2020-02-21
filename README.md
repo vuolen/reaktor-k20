@@ -13,9 +13,11 @@ My solution for Reaktor's 2020 summer job [pre-assignment](https://www.reaktor.c
 3. Navigate to the project directory with your terminal and run `lein ring server`
 4. The website should automatically open. If not, then navigate to `localhost:8000` with your browser of choice
 
+You can run the tests with `lein test` although the test suites' coverage is quite small, they were mostly to aid the design process.
+
 ## Documentation
 
-### Parser
+### Parser (`parser.clj`)
 
 The parser produces output like this from a control file:
 ```
@@ -30,9 +32,9 @@ The parser produces output like this from a control file:
 }
 ```
 
-### HTML generator
+### HTML generator (`htmlgen.clj`)
 
-The HTML generator produces output like this from a parsed package
+The HTML generator produces output like this from a parsed package (not 100% accurate, but conveys the structure adequately)
 ```
 <div class="package">
   <h1 class="name"> package_name </h1>
@@ -61,6 +63,14 @@ The HTML generator produces output like this from a parsed package
   </div>
 </div>
 ```
+
+### The core (`core.clj`)
+
+Contains the main handler and serves the index page and the package pages.
+
+## Contributing
+
+Although this is just a pre-assignment project, feel free to contribute. Open issues or pull requests and I'll take a look at them. Only thing to keep in mind is that I would prefer this project to stay simple, so extravagant features might not be suitable.
 
 ## License
 
