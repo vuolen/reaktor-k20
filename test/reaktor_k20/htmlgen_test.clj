@@ -27,23 +27,23 @@
            "package")
         "generate-package should return a div with the class \"package\"")
     
-    (is (= (first (nth result1 2))
+    (is (= (first (nth result1 3))
            :h1)
-        "given a package name, generate-package should have h1 as the first child")
+        "given a package name, generate-package should have h1 as the second child")
     
-    (is (= (:class (second (nth result1 2)))
+    (is (= (:class (second (nth result1 3)))
            "name")
-        "given a package name, generate-package should have a first child with the class \"name\"")
+        "given a package name, generate-package should have a second child with the class \"name\"")
     
-    (is (= (get-in result1 [2 2])
+    (is (= (get-in result1 [3 2])
            "TestPackage")
-        "given a package named TestPackage, generate-package should have a first child containing that name")
+        "given a package named TestPackage, generate-package should have a second child containing that name")
     
-    (is (= (get-in result2 [2 2])
+    (is (= (get-in result2 [3 2])
            "TestPackage2")
-        "given a package named TestPackage2, generate-package should have a first child containing that name"))
-  (is (nil? (nth (generate-package {} {:Description "desc"}) 2))
-      "given a package with no name, generate-package should have a first child of nil"))
+        "given a package named TestPackage2, generate-package should have a second child containing that name"))
+  (is (nil? (nth (generate-package {} {:Description "desc"}) 3))
+      "given a package with no name, generate-package should have a second child of nil"))
 
 
 (deftest generate-description-suite
@@ -73,9 +73,11 @@
   (is (= (-> (generate-description ["Hello" ["  This line is verbatim"]])
              (nth 3)
              (nth 0)
-             (nth 2))
-         (list [:pre {:class "verbatim"}
-                "  This line is verbatim"]))
+             (nth 2)
+             (nth 0)
+             (nth 1))
+         [:pre {:class "verbatim"}
+          "  This line is verbatim"])
       "given a description with a synopsis and a verbatim line, generate-description should return the verbatim line in a pre element"))
 
 
