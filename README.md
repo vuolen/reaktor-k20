@@ -2,6 +2,9 @@
 
 [DEMO HERE](https://reaktor-k20.herokuapp.com/)
 
+The website might load slowly at first, if you are the first user in a while to access it.
+Heroku automatically kills the process after a while of inactivity, so it has to start up again. After start up it should work normally though.
+
 # reaktor-k20
 
 My solution for Reaktor's 2020 summer job [pre-assignment](https://www.reaktor.com/junior-dev-assignment/).
