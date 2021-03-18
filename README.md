@@ -7,7 +7,9 @@ Heroku automatically kills the process after a while of inactivity, so it has to
 
 # reaktor-k20
 
-My solution for Reaktor's 2020 summer job [pre-assignment](https://www.reaktor.com/junior-dev-assignment/).
+My solution for Reaktor's 2020 summer job pre-assignment:
+
+>On Debian and Ubuntu systems, there is a file /var/lib/dpkg/status, that holds information about software packages that the system knows about. Write a small program in a programming language of your choice that exposes some key information about packages in the file via an HTML interface.
 
 ## Usage
 
