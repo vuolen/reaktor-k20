@@ -1,9 +1,6 @@
-![Heroku](https://heroku-badge.herokuapp.com/?app=reaktor-k20)
-
-[DEMO HERE](https://reaktor-k20.herokuapp.com/)
+[DEMO HERE](https://reaktor-k20-clps57herq-lz.a.run.app)
 
 The website might load slowly at first, if you are the first user in a while to access it.
-Heroku automatically kills the process after a while of inactivity, so it has to start up again. After start up it should work normally though.
 
 # reaktor-k20
 
